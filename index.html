@@ -2,6 +2,1628 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="VINCENT — Web & Mobile App Developer" />
+
+    <title>VINCENT — Web & Mobile App Developer</title>
+
+    <!-- =========================================================
+         GOOGLE FONTS
+    ========================================================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- =========================================================
+         THREE.JS
+    ========================================================== -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- =========================================================
+         STYLES
+    ========================================================== -->
+
+    <style>
+      /* =====================================================
+           ROOT
+        ====================================================== */
+
+      :root {
+        --ink: #0c0c10;
+        --ink2: #15151c;
+
+        --paper: #f4f1ea;
+        --paper2: #e9e5dc;
+
+        --red: #e63946;
+        --red2: #ff2e4d;
+
+        --gold: #ffb703;
+
+        --blue: #2b6cff;
+
+        --green: #2ee6a8;
+
+        --white: #ffffff;
+
+        --black: #000000;
+
+        --border: rgba(12, 12, 16, 0.18);
+
+        --shadow: 10px 10px 0 rgba(12, 12, 16, 0.9);
+
+        --shadow-small: 5px 5px 0 rgba(12, 12, 16, 0.9);
+      }
+
+      /* =====================================================
+           RESET
+        ====================================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--paper);
+
+        color: var(--ink);
+
+        font-family: "Inter", sans-serif;
+
+        overflow-x: hidden;
+
+        cursor: default;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      /* =====================================================
+           CUSTOM SCROLLBAR
+        ====================================================== */
+
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--ink);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--red);
+        border: 2px solid var(--ink);
+      }
+
+      /* =====================================================
+           SCROLL PROGRESS
+        ====================================================== */
+
+      #scroll-progress {
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 0%;
+
+        height: 5px;
+
+        background: var(--red);
+
+        z-index: 99999;
+      }
+
+      /* =====================================================
+           GRAIN
+        ====================================================== */
+
+      .grain {
+        position: fixed;
+
+        inset: 0;
+
+        pointer-events: none;
+
+        z-index: 9990;
+
+        opacity: 0.075;
+
+        mix-blend-mode: multiply;
+
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+
+        animation: grainMove 0.25s steps(2) infinite;
+      }
+
+      @keyframes grainMove {
+        0% {
+          transform: translate(0, 0);
+        }
+
+        25% {
+          transform: translate(2%, -2%);
+        }
+
+        50% {
+          transform: translate(-2%, 2%);
+        }
+
+        75% {
+          transform: translate(1%, 2%);
+        }
+
+        100% {
+          transform: translate(-1%, -1%);
+        }
+      }
+
+      /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+      .nav {
+        position: fixed;
+
+        top: 20px;
+        left: 20px;
+        right: 20px;
+
+        z-index: 9000;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        pointer-events: none;
+      }
+
+      .nav-logo {
+        pointer-events: auto;
+
+        background: var(--ink);
+
+        color: var(--paper);
+
+        padding: 12px 16px;
+
+        font-family: "Anton", sans-serif;
+
+        font-size: 22px;
+
+        letter-spacing: 2px;
+
+        box-shadow: var(--shadow-small);
+
+        transform: rotate(-2deg);
+
+        transition: 0.25s ease;
+      }
+
+      .nav-logo:hover {
+        background: var(--red);
+
+        transform: rotate(0deg) translateY(-3px);
+      }
+
+      .nav-links {
+        display: flex;
+
+        gap: 8px;
+
+        pointer-events: auto;
+      }
+
+      .nav-links a {
+        background: var(--paper);
+
+        border: 2px solid var(--ink);
+
+        padding: 9px 13px;
+
+        font-family: "JetBrains Mono", monospace;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        box-shadow: 3px 3px 0 var(--ink);
+
+        transition: 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background: var(--red);
+
+        color: white;
+
+        transform: translate(-2px, -2px);
+
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      /* =====================================================
+           HERO
+        ====================================================== */
+
+      .hero {
+        position: relative;
+
+        min-height: 100vh;
+
+        background:
+          radial-gradient(
+            circle at 50% 45%,
+            rgba(230, 57, 70, 0.08),
+            transparent 35%
+          ),
+          var(--paper);
+
+        overflow: hidden;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+      }
+
+      /* =====================================================
+           THREE.JS CONTAINER
+        ====================================================== */
+
+      #three-container {
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 2;
+
+        pointer-events: none;
+      }
+
+      #three-container canvas {
+        width: 100% !important;
+
+        height: 100% !important;
+
+        display: block;
+      }
+
+      /* =====================================================
+           HERO SPEED LINES
+        ====================================================== */
+
+      .hero-speedlines {
+        position: absolute;
+
+        inset: -50%;
+
+        z-index: 1;
+
+        opacity: 0.38;
+
+        background: repeating-conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 5deg,
+          rgba(12, 12, 16, 0.12) 5.4deg,
+          rgba(12, 12, 16, 0.12) 5.8deg,
+          transparent 6.2deg,
+          transparent 12deg
+        );
+
+        animation: speedSpin 35s linear infinite;
+      }
+
+      @keyframes speedSpin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* =====================================================
+           HERO GRID
+        ====================================================== */
+
+      .hero-grid {
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 0;
+
+        opacity: 0.16;
+
+        background-image:
+          linear-gradient(rgba(12, 12, 16, 0.25) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(12, 12, 16, 0.25) 1px, transparent 1px);
+
+        background-size: 70px 70px;
+
+        mask-image: radial-gradient(circle, black 20%, transparent 75%);
+      }
+
+      /* =====================================================
+           HERO CONTENT
+        ====================================================== */
+
+      .hero-content {
+        position: relative;
+
+        z-index: 10;
+
+        width: min(1200px, 92%);
+
+        text-align: center;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        pointer-events: none;
+      }
+
+      /* =====================================================
+           JAPANESE LABEL
+        ====================================================== */
+
+      .hero-jp {
+        font-family: "Noto Serif JP", serif;
+
+        font-weight: 900;
+
+        font-size: clamp(18px, 2vw, 28px);
+
+        margin-bottom: 5px;
+
+        transform: translateY(0);
+
+        letter-spacing: 6px;
+      }
+
+      /* =====================================================
+           HERO TITLE
+        ====================================================== */
+
+      .hero-title {
+        position: relative;
+
+        font-family: "Anton", sans-serif;
+
+        font-size: clamp(100px, 21vw, 300px);
+
+        line-height: 0.78;
+
+        letter-spacing: -7px;
+
+        color: var(--ink);
+
+        text-transform: uppercase;
+
+        text-shadow:
+          5px 5px 0 var(--red),
+          10px 10px 0 var(--gold);
+
+        transform: translateZ(0);
+
+        user-select: none;
+      }
+
+      .hero-title::before {
+        content: "VINCENT";
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+
+        color: transparent;
+
+        -webkit-text-stroke: 2px var(--ink);
+
+        transform: translate(12px, 12px);
+
+        opacity: 0.2;
+
+        z-index: -1;
+      }
+
+      /* =====================================================
+           HERO SUBTITLE
+        ====================================================== */
+
+      .hero-subtitle {
+        margin-top: 25px;
+
+        font-family: "JetBrains Mono", monospace;
+
+        font-size: clamp(11px, 1.5vw, 16px);
+
+        font-weight: 700;
+
+        letter-spacing: 2px;
+
+        background: var(--ink);
+
+        color: var(--paper);
+
+        padding: 10px 18px;
+
+        transform: rotate(-1deg);
+      }
+
+      /* =====================================================
+           HERO CTA
+        ====================================================== */
+
+      .hero-cta {
+        margin-top: 35px;
+
+        display: inline-flex;
+
+        pointer-events: auto;
+
+        align-items: center;
+
+        gap: 10px;
+
+        background: var(--red);
+
+        color: white;
+
+        border: 3px solid var(--ink);
+
+        padding: 15px 24px;
+
+        font-family: "Bangers", cursive;
+
+        font-size: 22px;
+
+        letter-spacing: 2px;
+
+        box-shadow: 7px 7px 0 var(--ink);
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .hero-cta:hover {
+        transform: translate(4px, 4px);
+
+        box-shadow: 3px 3px 0 var(--ink);
+      }
+
+      /* =====================================================
+           PARALLAX SYMBOLS
+        ====================================================== */
+
+      .hero-symbol {
+        position: absolute;
+
+        z-index: 8;
+
+        font-family: "JetBrains Mono", monospace;
+
+        font-weight: 900;
+
+        pointer-events: none;
+
+        user-select: none;
+
+        will-change: transform;
+
+        transition: transform 0.15s linear;
+      }
+
+      .symbol-code {
+        top: 23%;
+
+        left: 8%;
+
+        font-size: 70px;
+
+        color: var(--blue);
+
+        transform: rotate(-12deg);
+      }
+
+      .symbol-number {
+        right: 8%;
+
+        top: 19%;
+
+        font-size: 90px;
+
+        color: var(--red);
+
+        transform: rotate(8deg);
+      }
+
+      .symbol-braces {
+        bottom: 20%;
+
+        left: 13%;
+
+        font-size: 80px;
+
+        color: var(--green);
+
+        transform: rotate(10deg);
+      }
+
+      .symbol-slash {
+        right: 12%;
+
+        bottom: 17%;
+
+        font-size: 100px;
+
+        color: var(--gold);
+
+        transform: rotate(-14deg);
+      }
+
+      .symbol-kanji {
+        left: 5%;
+
+        bottom: 8%;
+
+        font-family: "Noto Serif JP", serif;
+
+        font-size: 65px;
+
+        opacity: 0.7;
+      }
+
+      /* =====================================================
+           HERO RINGS
+        ====================================================== */
+
+      .hero-ring {
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        z-index: 3;
+
+        border: 2px solid rgba(12, 12, 16, 0.22);
+
+        border-radius: 50%;
+
+        pointer-events: none;
+      }
+
+      .ring-1 {
+        width: 500px;
+        height: 500px;
+
+        margin-left: -250px;
+        margin-top: -250px;
+
+        animation: ringSpin 20s linear infinite;
+      }
+
+      .ring-2 {
+        width: 700px;
+        height: 280px;
+
+        margin-left: -350px;
+        margin-top: -140px;
+
+        transform: rotate(25deg);
+
+        border-color: rgba(230, 57, 70, 0.3);
+
+        animation: ringSpinReverse 18s linear infinite;
+      }
+
+      .ring-3 {
+        width: 800px;
+        height: 800px;
+
+        margin-left: -400px;
+        margin-top: -400px;
+
+        border-style: dashed;
+
+        opacity: 0.4;
+
+        animation: ringSpin 30s linear infinite;
+      }
+
+      @keyframes ringSpin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes ringSpinReverse {
+        from {
+          transform: rotate(25deg);
+        }
+
+        to {
+          transform: rotate(-335deg);
+        }
+      }
+
+      /* =====================================================
+           MARQUEE
+        ====================================================== */
+
+      .marquee {
+        overflow: hidden;
+
+        background: var(--red);
+
+        color: white;
+
+        border-top: 4px solid var(--ink);
+
+        border-bottom: 4px solid var(--ink);
+
+        transform: rotate(-1deg) scale(1.02);
+
+        position: relative;
+
+        z-index: 20;
+      }
+
+      .marquee-track {
+        width: max-content;
+
+        display: flex;
+
+        gap: 35px;
+
+        padding: 13px 0;
+
+        font-family: "Bangers", cursive;
+
+        font-size: 30px;
+
+        letter-spacing: 2px;
+
+        animation: marqueeMove 25s linear infinite;
+      }
+
+      @keyframes marqueeMove {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* =====================================================
+           GENERAL SECTION
+        ====================================================== */
+
+      section {
+        position: relative;
+
+        padding: 120px max(6vw, 30px);
+      }
+
+      .section-dark {
+        background: var(--ink);
+
+        color: var(--paper);
+      }
+
+      .section-title {
+        font-family: "Anton", sans-serif;
+
+        font-size: clamp(60px, 10vw, 140px);
+
+        line-height: 0.85;
+
+        text-transform: uppercase;
+
+        letter-spacing: -2px;
+
+        margin-bottom: 50px;
+      }
+
+      .section-title span {
+        color: var(--red);
+      }
+
+      /* =====================================================
+           REVEAL
+        ====================================================== */
+
+      .reveal {
+        opacity: 0;
+
+        transform: translateY(70px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+
+      /* =====================================================
+           ABOUT
+        ====================================================== */
+
+      .about-grid {
+        max-width: 1250px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 70px;
+
+        align-items: center;
+      }
+
+      .about-copy {
+        font-size: 20px;
+
+        line-height: 1.8;
+      }
+
+      .about-copy strong {
+        color: var(--red);
+      }
+
+      /* =====================================================
+           CODE WINDOW
+        ====================================================== */
+
+      .code-window {
+        background: #101015;
+
+        color: #f4f1ea;
+
+        border: 4px solid var(--ink);
+
+        box-shadow: 12px 12px 0 var(--red);
+
+        transform: rotate(2deg);
+
+        transition: transform 0.35s ease;
+      }
+
+      .code-window:hover {
+        transform: rotate(0deg) translateY(-10px);
+      }
+
+      .code-top {
+        height: 38px;
+
+        background: #1e1e26;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 0 12px;
+      }
+
+      .code-dot {
+        width: 11px;
+
+        height: 11px;
+
+        border-radius: 50%;
+
+        background: var(--red);
+      }
+
+      .code-dot:nth-child(2) {
+        background: var(--gold);
+      }
+
+      .code-dot:nth-child(3) {
+        background: var(--green);
+      }
+
+      .code-body {
+        padding: 25px;
+
+        font-family: "JetBrains Mono", monospace;
+
+        font-size: 13px;
+
+        line-height: 2;
+      }
+
+      .code-key {
+        color: #8ab4ff;
+      }
+
+      .code-string {
+        color: #9ee493;
+      }
+
+      .code-number {
+        color: #ffcf70;
+      }
+
+      /* =====================================================
+           FACT CARDS
+        ====================================================== */
+
+      .facts {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 15px;
+
+        margin-top: 35px;
+      }
+
+      .fact {
+        background: var(--paper);
+
+        color: var(--ink);
+
+        border: 3px solid var(--ink);
+
+        padding: 20px;
+
+        box-shadow: var(--shadow-small);
+
+        transition: transform 0.25s ease;
+      }
+
+      .fact:hover {
+        transform: translate(-4px, -4px);
+      }
+
+      .fact-number {
+        font-family: "Anton";
+
+        font-size: 40px;
+
+        color: var(--red);
+      }
+
+      .fact-label {
+        font-family: "JetBrains Mono";
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+      }
+
+      /* =====================================================
+           MANGA SECTION
+        ====================================================== */
+
+      .manga-section {
+        background: var(--paper2);
+      }
+
+      .manga-grid {
+        max-width: 1300px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 20px;
+      }
+
+      .manga-panel {
+        min-height: 430px;
+
+        position: relative;
+
+        overflow: hidden;
+
+        border: 5px solid var(--ink);
+
+        background: var(--ink);
+
+        box-shadow: 8px 8px 0 var(--ink);
+
+        opacity: 0;
+
+        transform: translateY(100px) rotate(2deg) scale(0.95);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .manga-panel:nth-child(even) {
+        transform: translateY(100px) rotate(-2deg) scale(0.95);
+      }
+
+      .manga-panel.visible {
+        opacity: 1;
+
+        transform: translateY(0) rotate(0) scale(1);
+      }
+
+      .panel-sky {
+        position: absolute;
+
+        inset: 0;
+
+        background: linear-gradient(160deg, #ff8a65, #e63946 45%, #3d1e5a);
+      }
+
+      .panel-city {
+        position: absolute;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        height: 55%;
+
+        background: repeating-linear-gradient(
+          90deg,
+          #101015 0 45px,
+          #1c1c24 45px 80px
+        );
+
+        clip-path: polygon(
+          0 40%,
+          12% 40%,
+          12% 15%,
+          25% 15%,
+          25% 48%,
+          38% 48%,
+          38% 5%,
+          52% 5%,
+          52% 35%,
+          65% 35%,
+          65% 20%,
+          80% 20%,
+          80% 0,
+          100% 0,
+          100% 100%,
+          0 100%
+        );
+      }
+
+      .panel-ink {
+        position: absolute;
+
+        inset: 0;
+
+        background: radial-gradient(
+          ellipse at center,
+          transparent 10%,
+          rgba(0, 0, 0, 0.8) 80%
+        );
+      }
+
+      .panel-sfx {
+        position: absolute;
+
+        right: 20px;
+
+        top: 20px;
+
+        font-family: "Bangers";
+
+        font-size: 80px;
+
+        color: white;
+
+        text-shadow: 5px 5px 0 var(--ink);
+
+        transform: rotate(-10deg);
+      }
+
+      .panel-caption {
+        position: absolute;
+
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+
+        background: white;
+
+        color: var(--ink);
+
+        padding: 15px;
+
+        border: 3px solid var(--ink);
+
+        font-family: "JetBrains Mono";
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      /* =====================================================
+           SKILLS
+        ====================================================== */
+
+      .skills-grid {
+        max-width: 1100px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 60px;
+      }
+
+      .skill {
+        margin-bottom: 30px;
+      }
+
+      .skill-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        margin-bottom: 8px;
+
+        font-family: "JetBrains Mono";
+
+        font-weight: 700;
+      }
+
+      .skill-bar {
+        height: 15px;
+
+        border: 3px solid var(--paper);
+
+        background: rgba(255, 255, 255, 0.08);
+
+        overflow: hidden;
+      }
+
+      .skill-fill {
+        height: 100%;
+
+        width: 0;
+
+        background: linear-gradient(90deg, var(--red), var(--gold));
+
+        transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .power-card {
+        border: 4px solid var(--paper);
+
+        padding: 40px;
+
+        position: relative;
+
+        transform: rotate(2deg);
+
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255, 255, 255, 0.03) 10px,
+          rgba(255, 255, 255, 0.03) 11px
+        );
+      }
+
+      .power-card h3 {
+        font-family: "Bangers";
+
+        font-size: 55px;
+
+        color: var(--gold);
+      }
+
+      .power-card p {
+        margin-top: 15px;
+
+        line-height: 1.7;
+
+        color: #d5d1c8;
+      }
+
+      /* =====================================================
+           PROJECTS
+        ====================================================== */
+
+      .projects {
+        background: var(--paper2);
+      }
+
+      .projects-grid {
+        max-width: 1300px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 25px;
+      }
+
+      .project-card {
+        position: relative;
+
+        min-height: 430px;
+
+        padding: 30px;
+
+        background: white;
+
+        border: 4px solid var(--ink);
+
+        box-shadow: 9px 9px 0 var(--ink);
+
+        overflow: hidden;
+
+        transform-style: preserve-3d;
+
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .project-card:hover {
+        box-shadow: 15px 15px 0 var(--red);
+      }
+
+      .project-number {
+        font-family: "Anton";
+
+        font-size: 80px;
+
+        line-height: 1;
+
+        color: var(--red);
+
+        opacity: 0.2;
+      }
+
+      .project-icon {
+        width: 100px;
+
+        height: 100px;
+
+        display: grid;
+
+        place-items: center;
+
+        margin: 25px auto;
+
+        border: 4px solid var(--ink);
+
+        background: var(--ink);
+
+        color: white;
+
+        font-family: "JetBrains Mono";
+
+        font-size: 22px;
+
+        transform: rotate(-5deg);
+
+        box-shadow: 6px 6px 0 var(--gold);
+      }
+
+      .project-card h3 {
+        font-family: "Anton";
+
+        font-size: 32px;
+
+        text-transform: uppercase;
+      }
+
+      .project-card p {
+        margin-top: 12px;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        color: #555;
+      }
+
+      .project-tag {
+        display: inline-block;
+
+        margin-top: 18px;
+
+        padding: 6px 9px;
+
+        background: var(--ink);
+
+        color: white;
+
+        font-family: "JetBrains Mono";
+
+        font-size: 9px;
+
+        font-weight: 700;
+      }
+
+      /* =====================================================
+           RESUME
+        ====================================================== */
+
+      .resume-grid {
+        max-width: 1100px;
+
+        margin: auto;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 50px;
+      }
+
+      .resume-block {
+        border-left: 5px solid var(--red);
+
+        padding-left: 25px;
+      }
+
+      .resume-year {
+        font-family: "JetBrains Mono";
+
+        color: var(--red);
+
+        font-weight: 800;
+
+        font-size: 14px;
+      }
+
+      .resume-block h3 {
+        font-family: "Anton";
+
+        font-size: 32px;
+
+        margin-top: 5px;
+      }
+
+      .resume-block p {
+        margin-top: 10px;
+
+        line-height: 1.7;
+
+        color: #555;
+      }
+
+      /* =====================================================
+           CONTACT
+        ====================================================== */
+
+      .contact {
+        min-height: 90vh;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        background: var(--red);
+
+        color: white;
+
+        overflow: hidden;
+      }
+
+      .contact::before {
+        content: "";
+
+        position: absolute;
+
+        inset: -50%;
+
+        background: repeating-conic-gradient(
+          transparent 0deg,
+          transparent 8deg,
+          rgba(0, 0, 0, 0.1) 8deg,
+          rgba(0, 0, 0, 0.1) 9deg
+        );
+
+        animation: speedSpin 35s linear infinite;
+      }
+
+      .contact-inner {
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .contact-title {
+        font-family: "Anton";
+
+        font-size: clamp(80px, 16vw, 220px);
+
+        line-height: 0.75;
+
+        text-shadow: 8px 8px 0 var(--ink);
+      }
+
+      .contact-subtitle {
+        font-family: "JetBrains Mono";
+
+        margin-top: 35px;
+
+        font-size: 14px;
+      }
+
+      .socials {
+        margin-top: 40px;
+
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+      }
+
+      .social {
+        background: var(--paper);
+
+        color: var(--ink);
+
+        padding: 12px 18px;
+
+        border: 3px solid var(--ink);
+
+        box-shadow: 5px 5px 0 var(--ink);
+
+        font-family: "JetBrains Mono";
+
+        font-weight: 700;
+
+        font-size: 11px;
+
+        transition: 0.2s ease;
+      }
+
+      .social:hover {
+        transform: translate(3px, 3px);
+
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+
+      /* =====================================================
+           FOOTER
+        ====================================================== */
+
+      footer {
+        background: var(--ink);
+
+        color: var(--paper);
+
+        padding: 30px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        font-family: "JetBrains Mono";
+
+        font-size: 10px;
+      }
+
+      /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+      @media (max-width: 900px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero-title {
+          font-size: clamp(80px, 22vw, 180px);
+        }
+
+        .ring-1 {
+          width: 400px;
+          height: 400px;
+
+          margin-left: -200px;
+          margin-top: -200px;
+        }
+
+        .ring-2 {
+          width: 500px;
+          height: 220px;
+
+          margin-left: -250px;
+          margin-top: -110px;
+        }
+
+        .ring-3 {
+          width: 600px;
+          height: 600px;
+
+          margin-left: -300px;
+          margin-top: -300px;
+        }
+
+        .about-grid,
+        .skills-grid,
+        .resume-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .manga-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .about-grid {
+          gap: 40px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        section {
+          padding: 80px 20px;
+        }
+
+        .hero-title {
+          font-size: 25vw;
+
+          letter-spacing: -3px;
+
+          text-shadow:
+            3px 3px 0 var(--red),
+            6px 6px 0 var(--gold);
+        }
+
+        .hero-subtitle {
+          font-size: 9px;
+
+          padding: 8px 10px;
+        }
+
+        .hero-symbol {
+          opacity: 0.35;
+        }
+
+        .symbol-code {
+          font-size: 45px;
+
+          left: 3%;
+        }
+
+        .symbol-number {
+          font-size: 50px;
+
+          right: 3%;
+        }
+
+        .symbol-braces {
+          font-size: 50px;
+
+          left: 5%;
+        }
+
+        .symbol-slash {
+          font-size: 60px;
+
+          right: 5%;
+        }
+
+        .symbol-kanji {
+          font-size: 40px;
+        }
+
+        .manga-grid,
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .facts {
+          grid-template-columns: 1fr;
+        }
+
+        .manga-panel {
+          min-height: 380px;
+        }
+
+        footer {
+          flex-direction: column;
+
+          gap: 10px;
+
+          text-align: center;
+        }
+      }
+
+      /* =====================================================
+           REDUCED MOTION
+        ====================================================== */
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+
+          animation-iteration-count: 1 !important;
+
+          scroll-behavior: auto !important;
+
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+</html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VINCENT — Web & Mobile App Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1478,14 +3100,82 @@
       }
     </style>
     <base target="_blank" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/lenis@1.3.26/dist/lenis.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"
+    />
+    <script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.min.js"></script>
+    <style>
+      html {
+        scroll-behavior: auto !important;
+      }
+      .three-hero {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0.9;
+      }
+      #three-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .hero .hero-inner,
+      .hero .hero-layer,
+      .hero .hero-float,
+      .hero .scroll-hint {
+        z-index: 3;
+      }
+      .cursor-light {
+        position: fixed;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 899;
+        background: radial-gradient(
+          circle,
+          rgba(230, 57, 70, 0.11),
+          transparent 68%
+        );
+        transform: translate(-50%, -50%);
+      }
+      @media (max-width: 700px) {
+        .three-hero {
+          opacity: 0.55;
+        }
+        .cursor-light {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .three-hero,
+        .cursor-light {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="progress"></div>
     <div class="noise"></div>
+    <div class="cursor-light" id="cursor-light"></div>
     <a class="logo" href="#top">V<span>.</span>DEV</a>
 
     <!-- ================= HERO ================= -->
     <section class="hero" id="top">
+      <div class="three-hero" aria-hidden="true">
+        <canvas id="three-canvas"></canvas>
+      </div>
       <div class="hero-layer hero-speedlines" data-speed="0.08"></div>
       <div class="hero-layer" data-speed="0.3">
         <div class="hero-kanji kanji">開発</div>
@@ -1527,7 +3217,7 @@
     <!-- ================= CHAPTER 01 : ABOUT ================= -->
     <section class="chapter" id="about">
       <div class="chapter-bg kanji" data-speed="-0.16">開発者</div>
-      <div class="chapter-head">
+      <div class="chapter-head" data-aos="fade-up" data-aos-duration="900">
         <span class="ch-num kanji" data-reveal>第1章</span>
         <h2 data-reveal>THE DEVELOPER</h2>
         <div class="ch-line" data-reveal></div>
@@ -1603,17 +3293,22 @@
       >
         読め
       </div>
-      <div class="chapter-head">
+      <div class="chapter-head" data-aos="fade-up" data-aos-duration="900">
         <span class="ch-num kanji" data-reveal>第2章</span>
         <h2 data-reveal>READ THE MANGA</h2>
         <div class="ch-line" data-reveal></div>
       </div>
-      <div class="reader-note" data-reveal>
+      <div
+        class="reader-note"
+        data-reveal
+        data-aos="fade-up"
+        data-aos-duration="800"
+      >
         <p>Scroll — the panels move like an action sequence.</p>
         <p class="dir">READ RIGHT → LEFT, LIKE A REAL MANGA</p>
       </div>
 
-      <div class="spread">
+      <div class="spread" data-aos="fade-up" data-aos-duration="700">
         <div
           class="panel p2"
           data-speed="0.14"
@@ -1849,13 +3544,13 @@
     <!-- ================= CHAPTER 03 : SKILLS ================= -->
     <section class="chapter" id="skills">
       <div class="chapter-bg kanji" data-speed="-0.18">力</div>
-      <div class="chapter-head">
+      <div class="chapter-head" data-aos="fade-up" data-aos-duration="900">
         <span class="ch-num kanji" data-reveal>第3章</span>
         <h2 data-reveal>POWER LEVELS</h2>
         <div class="ch-line" data-reveal></div>
       </div>
 
-      <div class="skills-grid">
+      <div class="skills-grid" data-aos="fade-up" data-aos-duration="800">
         <div>
           <div class="skill" data-reveal>
             <div class="skill-top">
@@ -1944,15 +3639,17 @@
     <!-- ================= CHAPTER 04 : GALLERY ================= -->
     <section class="chapter gallery" id="works">
       <div class="chapter-bg kanji" data-speed="-0.15">作品</div>
-      <div class="chapter-head">
+      <div class="chapter-head" data-aos="fade-up" data-aos-duration="900">
         <span class="ch-num kanji" data-reveal>第4章</span>
         <h2 data-reveal>APP ARCHIVE</h2>
         <div class="ch-line" data-reveal></div>
       </div>
 
-      <div class="gal-wrap">
+      <div class="gal-wrap" data-aos="fade-up" data-aos-duration="800">
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://sbs.bongabong.gov.ph/"
           data-speed="0.1"
           data-reveal="zoom"
@@ -1980,6 +3677,8 @@
         </a>
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://calendar.bongabong.gov.ph/"
           data-speed="0.2"
           data-reveal="zoom"
@@ -2007,6 +3706,8 @@
         </a>
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://vms2.bongabong.gov.ph/"
           data-speed="0.06"
           data-reveal="zoom"
@@ -2034,6 +3735,8 @@
         </a>
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://efilemanager.bongabong.gov.ph/"
           data-speed="0.22"
           data-reveal="zoom"
@@ -2061,6 +3764,8 @@
         </a>
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://arms.bongabong.gov.ph/"
           data-speed="0.09"
           data-reveal="zoom"
@@ -2089,6 +3794,8 @@
         </a>
         <a
           class="gcard"
+          data-aos="zoom-in-up"
+          data-aos-duration="800"
           href="https://osis.bongabong.gov.ph/"
           data-speed="0.17"
           data-reveal="zoom"
@@ -2120,13 +3827,13 @@
     <!-- ================= CHAPTER 05 : RESUME ================= -->
     <section class="chapter" id="resume">
       <div class="chapter-bg kanji" data-speed="-0.13">履歴</div>
-      <div class="chapter-head">
+      <div class="chapter-head" data-aos="fade-up" data-aos-duration="900">
         <span class="ch-num kanji" data-reveal>第5章</span>
         <h2 data-reveal>FIELD NOTES</h2>
         <div class="ch-line" data-reveal></div>
       </div>
 
-      <div class="resume-grid">
+      <div class="resume-grid" data-aos="fade-up" data-aos-duration="800">
         <div class="resume-intro halftone" data-reveal="left">
           <h3>JHON VINCENT C. BEREDO</h3>
           <div class="resume-role">BSIT GRADUATE · FULL-STACK BUILDER</div>
@@ -2157,7 +3864,12 @@
         </div>
 
         <div class="resume-projects">
-          <article class="resume-project" data-reveal="right">
+          <article
+            class="resume-project"
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-reveal="right"
+          >
             <div class="project-meta">
               JAN 2026 - PRESENT · MINDORO STATE UNIVERSITY
             </div>
@@ -2179,7 +3891,12 @@
               </li>
             </ul>
           </article>
-          <article class="resume-project" data-reveal="right">
+          <article
+            class="resume-project"
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-reveal="right"
+          >
             <div class="project-meta">
               SEP - DEC 2025 · MINDORO STATE UNIVERSITY
             </div>
@@ -2195,7 +3912,12 @@
               <li>Achieved a 95% successful print rate during testing.</li>
             </ul>
           </article>
-          <article class="resume-project" data-reveal="right">
+          <article
+            class="resume-project"
+            data-aos="fade-right"
+            data-aos-duration="800"
+            data-reveal="right"
+          >
             <div class="project-meta">
               JUN - AUG 2025 · MINDORO STATE UNIVERSITY
             </div>
@@ -2250,7 +3972,7 @@
           NEXT CHAPTER: YOUR APP
         </text>
       </svg>
-      <div class="socials">
+      <div class="socials" data-aos="fade-up" data-aos-duration="800">
         <a href="tel:09916935405" data-reveal>CALL</a>
         <a href="mailto:vincentjhon1031@gmail.com" data-reveal>EMAIL</a>
         <a href="https://github.com/Vincentjhon31" data-reveal>GITHUB</a>
@@ -2265,6 +3987,254 @@
       <span>© 2026 VINCENT — BUILT WITH CODE & CAFFEINE</span>
       <span class="kanji">全話、全ページ、パララックス。</span>
     </footer>
+
+    <script>
+      (() => {
+        /* ================= LENIS ================= */
+        const lenis = new Lenis({
+          autoRaf: false,
+          anchors: true,
+          allowNestedScroll: true,
+          naiveDimensions: true,
+          stopInertiaOnNavigate: true,
+          lerp: 0.085,
+        });
+
+        window.__portfolioScroll = 0;
+        lenis.on("scroll", (e) => {
+          window.__portfolioScroll = e.scroll;
+        });
+
+        /* ================= AOS ================= */
+        if (window.AOS) {
+          AOS.init({
+            duration: 850,
+            easing: "ease-out-cubic",
+            offset: 90,
+            mirror: true,
+            once: false,
+            anchorPlacement: "top-bottom",
+          });
+        }
+
+        /* ================= CURSOR LIGHT ================= */
+        const light = document.getElementById("cursor-light");
+        let mx = innerWidth / 2,
+          my = innerHeight / 2,
+          lx = mx,
+          ly = my;
+        addEventListener(
+          "pointermove",
+          (e) => {
+            mx = e.clientX;
+            my = e.clientY;
+          },
+          { passive: true },
+        );
+
+        /* ================= THREE.JS ================= */
+        const canvas = document.getElementById("three-canvas");
+        if (!canvas || !window.THREE) return;
+
+        const T = window.THREE;
+        const scene = new T.Scene();
+        const camera = new T.PerspectiveCamera(
+          38,
+          innerWidth / innerHeight,
+          0.1,
+          100,
+        );
+        camera.position.set(0, 0, 7.5);
+
+        const renderer = new T.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        });
+        renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.8));
+        renderer.setSize(innerWidth, innerHeight, false);
+
+        scene.add(new T.AmbientLight(0xffffff, 1.25));
+
+        const redLight = new T.PointLight(0xe63946, 8, 18);
+        redLight.position.set(3.5, 2.5, 5);
+        scene.add(redLight);
+
+        const goldLight = new T.PointLight(0xffb703, 5, 16);
+        goldLight.position.set(-3, -2, 4);
+        scene.add(goldLight);
+
+        const core = new T.Group();
+        scene.add(core);
+
+        const knot = new T.Mesh(
+          new T.TorusKnotGeometry(1.18, 0.25, 128, 20, 2, 3),
+          new T.MeshStandardMaterial({
+            color: 0xe63946,
+            metalness: 0.72,
+            roughness: 0.24,
+          }),
+        );
+        core.add(knot);
+
+        const shell = new T.Mesh(
+          new T.IcosahedronGeometry(1.72, 2),
+          new T.MeshBasicMaterial({
+            color: 0xf4f1ea,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.17,
+          }),
+        );
+        core.add(shell);
+
+        const nucleus = new T.Mesh(
+          new T.IcosahedronGeometry(0.43, 2),
+          new T.MeshBasicMaterial({ color: 0xffb703, wireframe: true }),
+        );
+        core.add(nucleus);
+
+        const orbit = new T.Group();
+        core.add(orbit);
+
+        [0xe63946, 0xffb703, 0x2b6cff].forEach((color, i) => {
+          const ring = new T.Mesh(
+            new T.TorusGeometry(2 + i * 0.42, 0.014 + i * 0.004, 10, 160),
+            new T.MeshBasicMaterial({
+              color,
+              transparent: true,
+              opacity: 0.52,
+            }),
+          );
+          ring.rotation.x = i * 0.65;
+          ring.rotation.y = i * 0.45;
+          orbit.add(ring);
+        });
+
+        const count = innerWidth < 700 ? 650 : 1100;
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+          const r = 3.4 + Math.random() * 6.5;
+          const a = Math.random() * Math.PI * 2;
+          const p = Math.acos(2 * Math.random() - 1);
+          pos[i * 3] = r * Math.sin(p) * Math.cos(a);
+          pos[i * 3 + 1] = r * Math.sin(p) * Math.sin(a);
+          pos[i * 3 + 2] = r * Math.cos(p);
+        }
+
+        const pg = new T.BufferGeometry();
+        pg.setAttribute("position", new T.BufferAttribute(pos, 3));
+
+        const particles = new T.Points(
+          pg,
+          new T.PointsMaterial({
+            color: 0xf4f1ea,
+            size: innerWidth < 700 ? 0.018 : 0.023,
+            transparent: true,
+            opacity: 0.38,
+          }),
+        );
+        scene.add(particles);
+
+        const floating = new T.Group();
+        scene.add(floating);
+
+        const floaters = [];
+        function floater(g, p, c) {
+          const m = new T.Mesh(
+            g,
+            new T.MeshBasicMaterial({
+              color: c,
+              wireframe: true,
+              transparent: true,
+              opacity: 0.42,
+            }),
+          );
+          m.position.set(...p);
+          floating.add(m);
+          floaters.push(m);
+        }
+
+        floater(new T.OctahedronGeometry(0.55), [-3, 1.9, -0.8], 0x2b6cff);
+        floater(
+          new T.BoxGeometry(0.72, 0.72, 0.72),
+          [3.1, 1.35, -1.2],
+          0xffb703,
+        );
+        floater(new T.TetrahedronGeometry(0.68), [-3.1, -1.8, -0.5], 0x2ee6a8);
+        floater(new T.IcosahedronGeometry(0.52, 1), [3, -1.9, -0.7], 0xe63946);
+
+        let mouseX = 0,
+          mouseY = 0,
+          sx = 0,
+          sy = 0,
+          scroll = 0;
+        addEventListener(
+          "pointermove",
+          (e) => {
+            mouseX = e.clientX / innerWidth - 0.5;
+            mouseY = e.clientY / innerHeight - 0.5;
+          },
+          { passive: true },
+        );
+
+        function raf(time) {
+          lenis.raf(time);
+
+          sx += (mouseX - sx) * 0.045;
+          sy += (mouseY - sy) * 0.045;
+          scroll += (window.__portfolioScroll - scroll) * 0.055;
+
+          knot.rotation.x = time * 0.00017 + sy * 0.32;
+          knot.rotation.y = time * 0.00024 + sx * 0.42;
+          shell.rotation.x = -time * 0.00008;
+          shell.rotation.y = time * 0.00013;
+          nucleus.rotation.x = time * 0.0007;
+          nucleus.rotation.y = -time * 0.00045;
+          orbit.rotation.x = time * 0.00018;
+          orbit.rotation.y = time * 0.00012;
+          particles.rotation.y = time * 0.000018;
+          particles.rotation.x = time * 0.000006;
+
+          floaters.forEach((m, i) => {
+            m.rotation.x += 0.002 + i * 0.00035;
+            m.rotation.y += 0.003 + i * 0.00045;
+            m.position.y += Math.sin(time * 0.0007 + i) * 0.0008;
+          });
+
+          const heroProgress = Math.min(1, scroll / Math.max(1, innerHeight));
+          const tx = sx * 1.05;
+          const ty = -sy * 0.6 - heroProgress * 0.38;
+
+          camera.position.x += (tx - camera.position.x) * 0.025;
+          camera.position.y += (ty - camera.position.y) * 0.025;
+          camera.position.z +=
+            (7.5 + heroProgress * 0.7 - camera.position.z) * 0.025;
+          camera.lookAt(0, 0, 0);
+
+          redLight.position.x = 3.5 + sx * 3;
+          redLight.position.y = 2.5 - sy * 2;
+
+          lx += (mx - lx) * 0.09;
+          ly += (my - ly) * 0.09;
+          if (light) light.style.transform = `translate3d(${lx}px,${ly}px,0)`;
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        addEventListener("resize", () => {
+          camera.aspect = innerWidth / innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.8));
+          renderer.setSize(innerWidth, innerHeight, false);
+          if (window.AOS) AOS.refreshHard();
+        });
+      })();
+    </script>
 
     <script>
       /* ---------- marquee content ---------- */
